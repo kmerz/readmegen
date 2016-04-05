@@ -1,0 +1,120 @@
+body {
+  font-family: Sans;
+}
+
+h2.header {
+  font-weight: lighter;
+  width: 100%;
+  border-bottom: 1px solid #ddd;
+}
+
+h3.title {
+  font-weight: lighter;
+}
+
+.container {
+  margin: 30px 20px;
+}
+
+.poll-name {
+  font-weight: normal;
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 10px;
+}
+
+.poll-desc {
+  font-family: monospace;
+  margin-bottom: 20px;
+  padding: 5px 5px 30px 5px;
+  background-color: #ddd;
+}
+
+.opt-edit.btn {
+  float: right;
+  border: 1px solid #bbb;
+}
+
+.table {
+  border-collapse: collapse;
+  margin-top: 25px;
+  width: 100%;
+}
+
+.table td {
+  padding-bottom: 5px;
+  padding-top: 5px;
+  border-bottom: 1px solid #ddd;
+  border-top: 1px solid #ddd;
+}
+
+.table .btn {
+  float: right;
+}
+
+.table a {
+  text-decoration: none;
+}
+
+.table a, .table a:visited, .table a:active, .table a:link {
+  color: #819FF7;
+}
+
+.table a:hover {
+  color: #045FB4;
+}
+
+.btns {
+  margin-top: 10px;
+}
+
+.btn {
+  text-decoration: none;
+  background-color: #eee;
+  color: #111;
+  padding: 3px 6px 3px 6px;
+  border: none;
+  font-size: 16px;
+  margin-right: 8px;
+}
+
+a.btn.td-edit {
+  color: #819FF7;
+}
+a.btn.td-delete {
+  color: #819FF7;
+}
+
+.input {
+  font-size: 14px;
+  margin-right: 5px;
+  padding-left: 5px;
+}
+
+.error {
+  background-color: #F78181;
+  padding: 5px;
+}
+
+.voters {
+  padding-left: 20px;
+}
+
+.true {
+  background-color: #BCF5A9;
+  color: #fff;
+  text-align: center;
+}
+
+.false {
+  background-color: #F5BCA9;
+}
+
+.checker {
+  text-align: center;
+}
+
+.count {
+  text-align: center;
+  background-color: #819FF7;
+  color: #fff;
+}
