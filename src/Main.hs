@@ -26,5 +26,11 @@ main = S.scotty 3000 $ do
     textde <- S.param "text_de"
     titleen <- S.param "title_en"
     texten <- S.param "text_en"
-    blaze $ ReadmeGen.Views.Show.render $ ReadmeD { title_de = titlede,
-      text_de = textde, title_en = titleen, text_en = texten }
+    let readme = ReadmeD {
+      title_de = titlede, text_de = textde, title_en = titleen,
+      text_en = texten }
+    blaze $ ReadmeGen.Views.Show.render $ toReadme readme
+
+toReadme :: ReadmeD -> String
+toReadme readme = (title_de readme) ++ "\n\n" ++
+  (text_de readme) ++ "\n\n" ++ (title_en readme) ++ "\n\n" ++ (text_en readme)

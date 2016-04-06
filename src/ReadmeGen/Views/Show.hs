@@ -15,5 +15,5 @@ render (readme) =
       H.h2 ! A.class_ "header" $ "Readme Generator"
       H.h3 ! A.class_ "title" $ "Show Readme"
       H.div ! A.class_ "container" $ do
-        H.textarea ! A.name "text_de" ! A.disabled "disabled" ! A.cols "50" !
-	     A.rows "10" $ toHtml $ show readme
+        H.textarea ! A.name "text_de" ! A.readonly "readonly" !  A.cols "79" !
+	     A.rows "50" $ toHtml $ readme
