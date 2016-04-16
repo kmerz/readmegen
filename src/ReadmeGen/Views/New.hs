@@ -13,7 +13,6 @@ render errors =
       H.link ! A.rel "stylesheet" ! A.type_ "text/css" ! A.href "/readmegen.css"
     H.body $ do
       H.h2 ! A.class_ "header" $ "Readme Generator"
-      H.h3 ! A.class_ "title" $ "Readme Generator"
       H.div ! A.class_ "container" $ do
         mapM_ renderErrors errors
         H.form ! A.class_ "form" ! A.method "post" ! A.action "/readme/" $ do
@@ -49,23 +48,22 @@ render errors =
 	        H.option "Problem"
 	        H.option "New Feature"
             H.tr $ do
-              H.td $ H.label "Summary De: "
+              H.td $ H.label ""
               H.td $ H.input ! A.required "required" ! A.maxlength "60" !
-                A.name "title_de"
+                A.placeholder "eine Zeile Zusammenfassung" ! A.name "title_de"
             H.tr $ do
-              H.td $ H.label "Text De: "
-              H.td $ H.textarea ! A.name "text_de" ! A.cols "50" !
-	        A.rows "10" $ ""
+              H.td $ H.label ""
+              H.td $ H.textarea ! A.required "required" ! A.name "text_de" !
+                A.cols "50" !  A.rows "10" $ ""
             H.tr $ do
-              H.td $ H.label "Summary En: "
+              H.td $ H.label ""
               H.td $ H.input ! A.required "required" ! A.maxlength "60" !
-                A.name "title_en"
+                A.placeholder "one line summary" ! A.name "title_en"
             H.tr $ do
-              H.td $ H.label "Text En: "
-              H.td $ H.textarea ! A.name "text_en" ! A.cols "50" !
-	        A.rows "10" $ ""
+              H.td $ H.label ""
+              H.td $ H.textarea ! A.required "required" ! A.name "text_en" !
+                A.cols "50" !  A.rows "10" $ ""
           H.div ! A.class_ "btns" $ do
-            H.a ! A.class_ "btn" ! A.href "/readme" $ "Back"
             H.input ! A.class_ "btn" ! A.type_ "submit" !
 		A.value "Generate Readme"
   where renderErrors error = do
