@@ -39,10 +39,10 @@ main = S.scotty 3000 $ do
       section = section,
       severity = severity,
       readme_type = readme_type,
-      title_de = titlede,
-      text_de = textde,
-      title_en = titleen,
-      text_en = texten }
+      title_de = asciify $ titlede,
+      text_de = asciify $ textde,
+      title_en = asciify $ titleen,
+      text_en = asciify $ texten }
     blaze $ ReadmeGen.Views.Show.render $ toReadme readme
 
 toReadme :: ReadmeD -> String
@@ -55,3 +55,16 @@ toReadme readme = "category:" ++ (category readme) ++ "\n" ++
   (text_de readme) ++ "\n\n" ++
   (readme_type readme) ++ ":\n" ++
   (text_en readme)
+
+asciify :: String -> String
+asciify str = foldl (\acc c ->
+    case c of
+      'ü' -> acc ++ "ue"
+      'Ü' -> acc ++ "Ue"
+      'ä' -> acc ++ "ae"
+      'Ä' -> acc ++ "Ae"
+      'ö' -> acc ++ "oe"
+      'Ö' -> acc ++ "Oe"
+      'ß' -> acc ++ "ss"
+      otherwise -> acc ++ c:""
+  ) "" str
