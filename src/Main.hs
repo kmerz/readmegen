@@ -4,6 +4,7 @@ import qualified Web.Scotty as S
 import qualified Text.Blaze.Html5 as H
 import qualified Text.Blaze.Html5.Attributes as A
 import Text.Blaze.Html.Renderer.Text
+import Data.List.Split (splitOn)
 
 import qualified ReadmeGen.Views.New
 import qualified ReadmeGen.Views.Show
@@ -40,15 +41,15 @@ main = S.scotty 3000 $ do
       severity = severity,
       readme_type = readme_type,
       title_de = asciify $ titlede,
-      text_de = asciify $ textde,
+      text_de = justify $ asciify $ textde,
       title_en = asciify $ titleen,
-      text_en = asciify $ texten }
+      text_en = justify $ asciify $ texten }
     blaze $ ReadmeGen.Views.Show.render $ toReadme readme
 
 toReadme :: ReadmeD -> String
-toReadme readme = "category:" ++ (category readme) ++ "\n" ++
-  "section:" ++ (section readme) ++ "\n" ++
-  "severity:" ++ (severity readme) ++ "\n" ++
+toReadme readme = "category: " ++ (category readme) ++ "\n" ++
+  "section: " ++ (section readme) ++ "\n" ++
+  "severity: " ++ (severity readme) ++ "\n" ++
   "summary_de: " ++ (title_de readme) ++ "\n" ++
   "summary_en: " ++ (title_en readme) ++ "\n\n" ++
   (readme_type readme) ++ ":\n" ++
@@ -68,3 +69,10 @@ asciify str = foldl (\acc c ->
       'ß' -> acc ++ "ss"
       otherwise -> acc ++ c:""
   ) "" str
+
+justify :: String -> String
+justify str = foldl (\text word ->
+  if ((length word) + (length $ last $ splitOn "\n" text)) < 75
+  then if (length text) == 0 then text ++ word else text ++ " " ++ word
+  else text ++ "\n" ++ word
+  ) "" (words str)

@@ -19,6 +19,6 @@ executable readmegen
   main-is:             Main.hs
   other-modules:       ReadmeGen.Views.New, ReadmeGen.Views.Show
   build-depends:       base >=4.7 && <4.8, scotty, blaze-html, monads-tf,
-                       text
+                       text, split
   hs-source-dirs:      src
   default-language:    Haskell2010
