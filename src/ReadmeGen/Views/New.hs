@@ -18,6 +18,10 @@ render errors =
         H.form ! A.class_ "form" ! A.method "post" ! A.action "/readme/" $ do
           H.table $ do
             H.tr $ do
+              H.td $ H.label "Bug"
+              H.td $ H.input ! A.required "required" ! A.maxlength "60" !
+                A.placeholder "the referencing bug" ! A.name "bug"
+            H.tr $ do
               H.td $ H.label "Category"
 	      H.td $ H.select ! A.name "category" $ do
 	        H.option "bugfix"
