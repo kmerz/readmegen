@@ -24,6 +24,7 @@ import Database.Persist.TH
 
 import qualified ReadmeGen.Views.New
 import qualified ReadmeGen.Views.Show
+import qualified ReadmeGen.Views.Edit
 
 share [mkPersist sqlSettings, mkMigrate "migrateAll"] [persistLowerCase|
   ReadmeD
@@ -63,7 +64,25 @@ scottySite port = S.scotty port $ do
     let id = toSqlKey (read param_id)
     readme <- getReadme id
     case readme of
-      Just readme -> blaze $ ReadmeGen.Views.Show.render $ toReadme readme
+      Just readme -> blaze $ ReadmeGen.Views.Show.render
+        (toReadme readme) param_id
+      Nothing -> blaze $ ReadmeGen.Views.New.render []
+  S.get "/readme/:id/edit" $ do
+    param_id <- S.param "id" :: S.ActionM String
+    let id = toSqlKey (read param_id)
+    readme <- getReadme id
+    case readme of
+      Just readme -> blaze $ ReadmeGen.Views.Edit.render
+        (readmeDBug readme)
+        (readmeDCategory readme)
+        (readmeDSection readme)
+        (readmeDSeverity readme)
+        (readmeDReadme_type readme)
+        (readmeDTitle_de readme)
+        (readmeDText_de readme)
+        (readmeDTitle_en readme)
+        (readmeDText_en readme)
+	param_id []
       Nothing -> blaze $ ReadmeGen.Views.New.render []
   S.post "/readme" $ do
     bug <- S.param "bug"
@@ -79,7 +98,37 @@ scottySite port = S.scotty port $ do
       text_de title_en text_en
     readme <- getReadme newId
     case readme of
-      Just readme -> blaze $ ReadmeGen.Views.Show.render $ toReadme readme
+      Just readme -> blaze $ ReadmeGen.Views.Show.render
+        (toReadme readme) (show newId)
+      Nothing -> blaze $ ReadmeGen.Views.New.render []
+  S.post "/readme/:id" $ do
+    param_id <- S.param "id" :: S.ActionM String
+    bug <- S.param "bug"
+    category <- S.param "category"
+    section <- S.param "section"
+    severity <- S.param "severity"
+    readme_type <- S.param "readme_type"
+    title_de <- S.param "title_de"
+    text_de <- S.param "text_de"
+    title_en <- S.param "title_en"
+    text_en <- S.param "text_en"
+    let id = toSqlKey (read param_id)
+    readme <- getReadme id
+    case readme of
+      Just readme -> do
+	let newreadme = readme {
+	  readmeDBug = bug,
+	  readmeDCategory = category,
+	  readmeDSection = section,
+	  readmeDSeverity = severity,
+	  readmeDReadme_type = readme_type,
+	  readmeDTitle_de = title_de,
+	  readmeDText_de = text_de,
+	  readmeDTitle_en = title_en,
+	  readmeDText_en = text_en
+	}
+	updateReadme id newreadme
+	blaze $ ReadmeGen.Views.Show.render (toReadme newreadme) param_id
       Nothing -> blaze $ ReadmeGen.Views.New.render []
 
 toReadme :: ReadmeD -> String
@@ -121,3 +170,6 @@ saveReadme bug category section severity readme_type
     readme_type title_de text_de title_en text_en now
 
 getReadme id = runSqlite "readme.db" $ get id
+
+updateReadme id readme = do
+  runSqlite "readme.db" $ replace id $ readme
