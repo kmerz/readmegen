@@ -62,7 +62,7 @@ scottySite port = S.scotty port $ do
     readmes <- liftIO getReadmes
     let items = map(\r -> (getReadmeId r, readmeDBug $ entityVal r,
                   readmeDTitle_en $ entityVal r)) readmes
-    blaze $ ReadmeGen.Views.Index.render items
+    blaze $ ReadmeGen.Views.Index.render items False
   S.get "/readmegen.css" $ S.file "readmegen.css"
   S.get "/readme/new" $ blaze $ ReadmeGen.Views.New.render []
   S.get "/readme/:id" $ do
@@ -136,6 +136,12 @@ scottySite port = S.scotty port $ do
 	updateReadme id newreadme
 	blaze $ ReadmeGen.Views.Show.render (toReadme newreadme) param_id
       Nothing -> blaze $ ReadmeGen.Views.New.render []
+  S.get "/search" $ do
+    bug <- S.param "bug"
+    readmes <- liftIO $ getReadmesByBug bug
+    let items = map(\r -> (getReadmeId r, readmeDBug $ entityVal r,
+                  readmeDTitle_en $ entityVal r)) readmes
+    blaze $ ReadmeGen.Views.Index.render items True
 
 toReadme :: ReadmeD -> String
 toReadme readme = "category: " ++ (readmeDCategory readme) ++ "\n" ++
@@ -185,3 +191,6 @@ getReadmeId x = unSqlBackendKey $ unReadmeDKey $ entityKey x
 
 getReadmes = runSqlite "readme.db" $
   selectList ([] :: [Filter ReadmeD]) [LimitTo 30, Desc ReadmeDId]
+
+getReadmesByBug bug = runSqlite "readme.db" $
+  selectList ([ReadmeDBug <-. [bug]] :: [Filter ReadmeD]) [LimitTo 30, Desc ReadmeDId]
