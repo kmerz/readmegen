@@ -17,6 +17,8 @@ render items =
       H.div ! A.class_ "container" $ do
         H.a ! A.class_ "btn" ! A.href "/readme/new" $ "New Readme"
         H.table ! A.class_ "table" $ mapM_ renderLn items
-  where renderLn i = H.tr $ do
-          H.td $ H.a ! A.href ("/readme/" <> H.stringValue (show $ fst i)) $
-            H.toHtml ("#" ++ (snd i))
+  where renderLn (id, bug, title) = H.tr $ do
+          H.td $ H.a ! A.href ("/readme/" <> H.stringValue (show id)) $
+            H.toHtml ("#" ++ bug)
+          H.td $ H.a ! A.href ("/readme/" <> H.stringValue (show id)) $
+            H.toHtml (title)

@@ -60,7 +60,8 @@ scottySite port = S.scotty port $ do
   S.get "/" $ S.redirect "/readme"
   S.get "/readme" $  do
     readmes <- liftIO getReadmes
-    let items = map(\r -> (getReadmeId r, readmeDBug $ entityVal r)) readmes
+    let items = map(\r -> (getReadmeId r, readmeDBug $ entityVal r,
+                  readmeDTitle_en $ entityVal r)) readmes
     blaze $ ReadmeGen.Views.Index.render items
   S.get "/readmegen.css" $ S.file "readmegen.css"
   S.get "/readme/new" $ blaze $ ReadmeGen.Views.New.render []
