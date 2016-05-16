@@ -25,6 +25,7 @@ import Database.Persist.TH
 import qualified ReadmeGen.Views.New
 import qualified ReadmeGen.Views.Show
 import qualified ReadmeGen.Views.Edit
+import qualified ReadmeGen.Views.Index
 
 share [mkPersist sqlSettings, mkMigrate "migrateAll"] [persistLowerCase|
   ReadmeD
@@ -56,9 +57,13 @@ main = do
   scottySite $ getPort args
 
 scottySite port = S.scotty port $ do
-  S.get "/" $ S.redirect "/new"
+  S.get "/" $ S.redirect "/readme"
+  S.get "/readme" $  do
+    readmes <- liftIO getReadmes
+    let items = map(\r -> (getReadmeId r, readmeDBug $ entityVal r)) readmes
+    blaze $ ReadmeGen.Views.Index.render items
   S.get "/readmegen.css" $ S.file "readmegen.css"
-  S.get "/new" $ blaze $ ReadmeGen.Views.New.render []
+  S.get "/readme/new" $ blaze $ ReadmeGen.Views.New.render []
   S.get "/readme/:id" $ do
     param_id <- S.param "id" :: S.ActionM String
     let id = toSqlKey (read param_id)
@@ -117,15 +122,15 @@ scottySite port = S.scotty port $ do
     case readme of
       Just readme -> do
 	let newreadme = readme {
-	  readmeDBug = bug,
-	  readmeDCategory = category,
-	  readmeDSection = section,
-	  readmeDSeverity = severity,
-	  readmeDReadme_type = readme_type,
-	  readmeDTitle_de = title_de,
-	  readmeDText_de = text_de,
-	  readmeDTitle_en = title_en,
-	  readmeDText_en = text_en
+          readmeDBug = bug,
+          readmeDCategory = category,
+          readmeDSection = section,
+          readmeDSeverity = severity,
+          readmeDReadme_type = readme_type,
+          readmeDTitle_de = title_de,
+          readmeDText_de = text_de,
+          readmeDTitle_en = title_en,
+          readmeDText_en = text_en
 	}
 	updateReadme id newreadme
 	blaze $ ReadmeGen.Views.Show.render (toReadme newreadme) param_id
@@ -175,3 +180,7 @@ updateReadme id readme = do
   runSqlite "readme.db" $ replace id $ readme
 
 getNewReadmeId id = unSqlBackendKey $ unReadmeDKey id
+getReadmeId x = unSqlBackendKey $ unReadmeDKey $ entityKey x
+
+getReadmes = runSqlite "readme.db" $
+  selectList ([] :: [Filter ReadmeD]) [LimitTo 30, Desc ReadmeDId]
