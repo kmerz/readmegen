@@ -20,6 +20,3 @@ render items =
   where renderLn i = H.tr $ do
           H.td $ H.a ! A.href ("/readme/" <> H.stringValue (show $ fst i)) $
             H.toHtml ("#" ++ (snd i))
-          H.td $ H.a ! A.class_ "btn" !
-            A.href (H.stringValue ("/polls/" ++ (show $ fst i) ++ "/delete")) $
-              "delete"
