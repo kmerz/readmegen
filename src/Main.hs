@@ -149,10 +149,17 @@ toReadme readme = "category: " ++ (readmeDCategory readme) ++ "\n" ++
   "severity: " ++ (readmeDSeverity readme) ++ "\n" ++
   "summary_de: " ++ (readmeDTitle_de readme) ++ "\n" ++
   "summary_en: " ++ (readmeDTitle_en readme) ++ "\n\n" ++
-  (readmeDReadme_type readme) ++ ":\n" ++
-  (readmeDText_de readme) ++ "\n\n" ++
-  (readmeDReadme_type readme) ++ ":\n" ++
-  (readmeDText_en readme)
+  (readmeDReadme_type readme) ++ ":\n" ++ textDe ++ "\n\n" ++
+  (readmeDReadme_type readme) ++ ":\n" ++ textEn
+  where textDe = if (readmeDReadme_type readme) == "Problem"
+		 then (readmeDText_de readme) ++ "\n" ++
+                   "Das Problem wurde behoben."
+		 else (readmeDText_de readme)
+        textEn = if (readmeDReadme_type readme) == "Problem"
+		 then (readmeDText_en readme) ++ "\n" ++
+                   "The problem is solved."
+		 else (readmeDText_en readme)
+
 
 
 asciify :: String -> String
