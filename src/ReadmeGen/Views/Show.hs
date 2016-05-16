@@ -16,6 +16,8 @@ render readme id =
       H.h3 ! A.class_ "title" $ "Show Readme"
       H.a ! A.class_ "btn" !
         A.href (H.stringValue ("/readme/" ++ (id) ++ "/edit")) $ "Edit"
+      H.a ! A.class_ "btn" !
+        A.href (H.stringValue ("/readme")) $ "Index"
       H.div ! A.class_ "container" $ do
         H.textarea ! A.name "text_de" ! A.readonly "readonly" !  A.cols "79" !
 	     A.rows "50" $ toHtml $ readme

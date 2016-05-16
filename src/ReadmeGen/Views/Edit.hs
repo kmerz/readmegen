@@ -60,6 +60,8 @@ render bug category section severity readme_type title_de text_de title_en
           H.div ! A.class_ "btns" $ do
             H.input ! A.class_ "btn" ! A.type_ "submit" !
 		A.value "Update Readme"
+            H.a ! A.class_ "btn" !
+              A.href (H.stringValue ("/readme/" ++ (id) ++ "")) $ "Back"
   where renderErrors error = do
           H.p ! A.class_ "error" $ error
           H.br
