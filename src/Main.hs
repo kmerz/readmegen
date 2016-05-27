@@ -100,8 +100,9 @@ scottySite port = S.scotty port $ do
     text_de <- S.param "text_de"
     title_en <- S.param "title_en"
     text_en <- S.param "text_en"
-    newId <- saveReadme bug category section severity readme_type title_de
-      text_de title_en text_en
+    newId <- saveReadme bug category section severity readme_type
+      (asciify title_de) (fixup text_de) (asciify title_en)
+      (fixup text_en)
     readme <- getReadme newId
     case readme of
       Just readme -> blaze $ ReadmeGen.Views.Show.render
@@ -128,10 +129,10 @@ scottySite port = S.scotty port $ do
           readmeDSection = section,
           readmeDSeverity = severity,
           readmeDReadme_type = readme_type,
-          readmeDTitle_de = title_de,
-          readmeDText_de = text_de,
-          readmeDTitle_en = title_en,
-          readmeDText_en = text_en
+          readmeDTitle_de = asciify $ title_de,
+          readmeDText_de = fixup $ text_de,
+          readmeDTitle_en = asciify $ title_en,
+          readmeDText_en = fixup $ text_en
 	}
 	updateReadme id newreadme
 	blaze $ ReadmeGen.Views.Show.render (toReadme newreadme) param_id
@@ -157,10 +158,11 @@ toReadme readme = "category: " ++ (readmeDCategory readme) ++ "\n" ++
 		 else (readmeDText_de readme)
         textEn = if (readmeDReadme_type readme) == "Problem"
 		 then (readmeDText_en readme) ++ "\n" ++
-                   "The problem is solved."
+                   "The problem has been fixed."
 		 else (readmeDText_en readme)
 
-
+fixup :: String -> String
+fixup = asciify . justify
 
 asciify :: String -> String
 asciify str = foldl (\acc c ->
