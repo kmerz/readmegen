@@ -15,6 +15,7 @@ import qualified Text.Blaze.Html5 as H
 import qualified Text.Blaze.Html5.Attributes as A
 import Text.Blaze.Html.Renderer.Text
 import Data.List.Split (splitOn)
+import Data.Text.Lazy (pack)
 import Data.Time (UTCTime, getCurrentTime)
 import System.Environment (getArgs)
 
@@ -73,6 +74,13 @@ scottySite port = S.scotty port $ do
       Just readme -> blaze $ ReadmeGen.Views.Show.render
         (toReadme readme) param_id
       Nothing -> blaze $ ReadmeGen.Views.New.render []
+  S.get "/readme/:id/text" $ do
+    param_id <- S.param "id" :: S.ActionM String
+    let id = toSqlKey (read param_id)
+    readme <- getReadme id
+    case readme of
+      Just readme -> S.text $ pack $ toReadme readme
+      Nothing -> S.text $ ""
   S.get "/readme/:id/edit" $ do
     param_id <- S.param "id" :: S.ActionM String
     let id = toSqlKey (read param_id)
