@@ -72,7 +72,7 @@ scottySite port = S.scotty port $ do
     readme <- getReadme id
     case readme of
       Just readme -> blaze $ ReadmeGen.Views.Show.render
-        (toReadme readme) param_id
+        (toReadme readme) param_id (readmeDBug readme)
       Nothing -> blaze $ ReadmeGen.Views.New.render []
   S.get "/readme/:id/text" $ do
     param_id <- S.param "id" :: S.ActionM String
@@ -114,7 +114,7 @@ scottySite port = S.scotty port $ do
     readme <- getReadme newId
     case readme of
       Just readme -> blaze $ ReadmeGen.Views.Show.render
-        (toReadme readme) (show $ getNewReadmeId newId)
+        (toReadme readme) (show $ getNewReadmeId newId) (readmeDBug readme)
       Nothing -> blaze $ ReadmeGen.Views.New.render []
   S.post "/readme/:id" $ do
     param_id <- S.param "id" :: S.ActionM String
@@ -144,6 +144,7 @@ scottySite port = S.scotty port $ do
 	}
 	updateReadme id newreadme
 	blaze $ ReadmeGen.Views.Show.render (toReadme newreadme) param_id
+          (readmeDBug newreadme)
       Nothing -> blaze $ ReadmeGen.Views.New.render []
   S.get "/search" $ do
     bug <- S.param "bug"

@@ -90,6 +90,10 @@ a.btn.td-delete {
   padding-left: 5px;
 }
 
+.copy-input {
+  width: 569px;
+}
+
 .error {
   background-color: #F78181;
   padding: 5px;
