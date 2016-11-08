@@ -1,0 +1,12 @@
+{"issue":{"id":31825,"project":{"id":85,"name":"Sprint
+  Bugs"},"tracker":{"id":1,"name":"Bug"},"status":{"id":1,"name":"New"},"priority":{"id":4,"name":"Normal"},"author":{"id":123,"name":"Andreas
+  Hempel"},"subject":"Jobs aus der Smartcard Rekeying Übersicht landen in der
+  falschen Domain","description":"Szenario: genucards in der Subdomain und die
+  VPN-Zentrale in der root-Domain. Wenn bei den genucards ein neuer Key erzeugt
+  wird, muss die Zentrale aktualisiert werden,\r\nwas man am einfachsten dirket
+  über die Smartcard Rekeying GUI der genucards macht. Jetzt landet aber der Job
+  für die Zentrale aber in der Subdomain.\r\n\r\nDamit hat auch die Appliance im
+  Footer keinen letzten Job mehr. siehe Screenshot \r\n\r\nevtl. sollten die
+  Jobs auf die einzelnen Domains der Appliances aufgeteilt
+  werden.","start_date":"2016-11-04","done_ratio":0,"custom_fields":[{"id":3,"name":"Produktversion","value":""},{"id":5,"name":"TNT-Request-ID","value":""},{"id":6,"name":"Easy
+  Bug","value":"0"}],"created_on":"2016-11-04T13:27:23Z","updated_on":"2016-11-07T10:25:09Z"}}
