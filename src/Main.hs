@@ -113,8 +113,8 @@ scottySite port = S.scotty port $ do
       (fixup text_en)
     readme <- getReadme newId
     case readme of
-      Just readme -> blaze $ ReadmeGen.Views.Show.render
-        (toReadme readme) (show $ getNewReadmeId newId) (readmeDBug readme)
+      Just readme -> S.redirect $ pack $ "/readme/" ++
+        (show $ getNewReadmeId newId)
       Nothing -> blaze $ ReadmeGen.Views.New.render []
   S.post "/readme/:id" $ do
     param_id <- S.param "id" :: S.ActionM String
@@ -205,6 +205,7 @@ updateReadme id readme = do
   runSqlite "readme.db" $ replace id $ readme
 
 getNewReadmeId id = unSqlBackendKey $ unReadmeDKey id
+
 getReadmeId x = unSqlBackendKey $ unReadmeDKey $ entityKey x
 
 getReadmes = runSqlite "readme.db" $

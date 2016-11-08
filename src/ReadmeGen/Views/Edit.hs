@@ -16,7 +16,8 @@ render bug category section severity readme_type title_de text_de title_en
       H.h2 ! A.class_ "header" $ "Readme Generator"
       H.div ! A.class_ "container" $ do
         mapM_ renderErrors errors
-        H.form ! A.class_ "form" ! A.method "post" ! A.action (H.stringValue $ "/readme/" ++ id) $ do
+        H.form ! A.class_ "form" ! A.method "post" ! A.action (H.stringValue $
+          "/readme/" ++ id) $ do
           H.table $ do
             H.tr $ do
               H.td $ H.label "Bug"
