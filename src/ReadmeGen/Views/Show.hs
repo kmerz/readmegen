@@ -6,7 +6,7 @@ import Text.Blaze.Html5 as H
 import Text.Blaze.Html5.Attributes as A
 import Text.Blaze.Html.Renderer.Text
 
-host = "http://localhost:3000/"
+host = "http://noodle.genua.de:3000"
 
 fetch_url id bgnr =
   "curl " ++ host ++ "/readme/" ++ (id) ++ "/text > " ++
