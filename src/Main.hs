@@ -167,7 +167,7 @@ toReadme readme = "category: " ++ (readmeDCategory readme) ++ "\n" ++
 		 else (readmeDText_de readme)
         textEn = if (readmeDReadme_type readme) == "Problem"
 		 then (readmeDText_en readme) ++ "\n" ++
-                   "The problem has been fixed."
+                   "The problem has been resolved."
 		 else (readmeDText_en readme)
 
 fixup :: String -> String
